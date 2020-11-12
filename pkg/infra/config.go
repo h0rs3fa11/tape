@@ -26,6 +26,7 @@ type Config struct {
 
 type Node struct {
 	Addr          string `yaml:"addr"`
+	UserAgent     string `yaml:"user-agent"`
 	TLSCACert     string `yaml:"tls_ca_cert"`
 	TLSCAKey      string `yaml:"tls_ca_key"`
 	TLSCARoot     string `yaml:"tls_ca_root"`

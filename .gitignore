@@ -14,3 +14,6 @@
 
 # Files from IDE
 *.idea/
+
+cert
+go_build_main_go

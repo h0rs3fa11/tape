@@ -3,12 +3,11 @@ package infra
 import (
 	"context"
 	"crypto/tls"
-	"time"
-
+	"github.com/guoger/tape/pkg/comm"
 	"github.com/hyperledger/fabric-protos-go/orderer"
 	"github.com/hyperledger/fabric-protos-go/peer"
-	"github.com/hyperledger/fabric/core/comm"
 	"github.com/pkg/errors"
+	"time"
 )
 
 func CreateGRPCClient(node Node) (*comm.GRPCClient, error) {
@@ -18,7 +17,7 @@ func CreateGRPCClient(node Node) (*comm.GRPCClient, error) {
 	}
 	config := comm.ClientConfig{}
 	config.Timeout = 5 * time.Second
-	config.SecOpts = comm.SecureOptions{
+	config.SecOpts = &comm.SecureOptions{
 		UseTLS:            false,
 		RequireClientCert: false,
 		ServerRootCAs:     certs,
@@ -51,7 +50,7 @@ func CreateEndorserClient(node Node) (peer.EndorserClient, error) {
 		return nil, err
 	}
 
-	conn, err := gRPCClient.NewConnection(node.Addr, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
+	conn, err := gRPCClient.NewConnection(node.Addr, node.UserAgent, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
 	if err != nil {
 		return nil, errors.Wrapf(err, "error connecting to %s", node.Addr)
 	}
@@ -65,7 +64,7 @@ func CreateBroadcastClient(node Node) (orderer.AtomicBroadcast_BroadcastClient, 
 		return nil, err
 	}
 
-	conn, err := gRPCClient.NewConnection(node.Addr, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
+	conn, err := gRPCClient.NewConnection(node.Addr, node.UserAgent, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
 	if err != nil {
 		return nil, errors.Wrapf(err, "error connecting to %s", node.Addr)
 	}
@@ -79,7 +78,7 @@ func CreateDeliverFilteredClient(node Node) (peer.Deliver_DeliverFilteredClient,
 		return nil, err
 	}
 
-	conn, err := gRPCClient.NewConnection(node.Addr, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
+	conn, err := gRPCClient.NewConnection(node.Addr, node.UserAgent, func(tlsConfig *tls.Config) { tlsConfig.InsecureSkipVerify = true })
 	if err != nil {
 		return nil, errors.Wrapf(err, "error connecting to %s", node.Addr)
 	}

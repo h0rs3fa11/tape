@@ -43,14 +43,18 @@ Modify `config.yaml` according to your network. This is a sample:
 ```yaml
 endorsers:
   - addr: localhost:7051
+    user-agent: ""
     tls_ca_cert: /path/to/peer1/tls/ca/cert
   - addr: localhost:7051
+    user-agent: ""
     tls_ca_cert: /path/to/peer2/tls/ca/cert
 committer:
   addr: localhost:7051
+  user-agent: ""
   tls_ca_cert: /path/to/peer2/tls/ca/cert
 orderer:
   addr: localhost:7050
+  user-agent: ""
   tls_ca_cert: /path/to/orderer/tls/ca/cert
 channel: mychannel
 chaincode: basic
